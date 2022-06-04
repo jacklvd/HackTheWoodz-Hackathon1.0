@@ -1,7 +1,7 @@
 from django.db import models
 
 class Project(models.Model):
-    title = models.CharField(max_length=25)
+    title = models.CharField(max_length=200)
     tools = models.TextField()
     description = models.TextField(blank=True, null=True)
 
@@ -9,5 +9,7 @@ class Project(models.Model):
         return self.title
 
 class User(models.Model):
-    user = models.CharField(max_length=25)
-    created = models.DateTimeField(auto_now_add=False)
+    # host = 
+    user = models.CharField(max_length=30)
+    updated = models.DateTimeField(auto_now=True)
+    created = models.DateTimeField(auto_now_add=True)

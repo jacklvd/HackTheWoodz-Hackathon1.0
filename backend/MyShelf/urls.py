@@ -15,8 +15,18 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from django.http import HttpResponse
+
+# for testing or setting purpose
+def home(request):
+    return HttpResponse('Home Page')
+
+def projectfolders(request):
+    return HttpResponse('Project Description')
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', include('projectmanager.urls')),
+    path('', home),
+    path('folders/', projectfolders),
+    path('project/', include('projectmanager.urls')),
 ]
