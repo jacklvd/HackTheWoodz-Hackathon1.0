@@ -25,8 +25,11 @@ const Login = () => {
 
     useEffect(() => {
 
-        PracGet();
+        const update = async () => {
+            await PracGet();
+        }
 
+        update();
     }, [])
 
     return (
