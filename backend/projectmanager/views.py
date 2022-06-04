@@ -2,6 +2,8 @@ from django.shortcuts import render
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
 from projectmanager.models import Project
+from django.contrib.auth.models import User
+from django.contrib import messages
 from .serializers import ProjectSerializer
 
 # for testing purpose
@@ -16,11 +18,22 @@ from .serializers import ProjectSerializer
 def getData(request):
     person = Project.objects.all()
     serializer = ProjectSerializer(person, many=True)
-    return Response(serializer.data)
+    return Response(request, serializer.data)
 
 @api_view(['POST'])
 def addData(request):
     serializer = ProjectSerializer(data=request.data)
     if serializer.is_valid():
         serializer.save()
-    return Response(serializer.data)
+    return Response(request, serializer.data)
+
+def loginPage(request):
+    if request.method == 'POST':
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+        # check if the user is exist
+        try:
+            user = User.objects.get(username=username)
+        except:
+            messages.error(request, 'User does not exit')
+    return Response(username)
