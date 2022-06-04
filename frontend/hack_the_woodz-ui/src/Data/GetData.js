@@ -18,4 +18,6 @@ export const PracPost = async () => {
             age: 10
         }
     });
+    
+    console.log(res);
 };
