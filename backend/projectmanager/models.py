@@ -7,3 +7,7 @@ class Project(models.Model):
 
     def __str__(self):
         return self.title
+
+class User(models.Model):
+    user = models.CharField(max_length=25)
+    created = models.DateTimeField(auto_now_add=False)
