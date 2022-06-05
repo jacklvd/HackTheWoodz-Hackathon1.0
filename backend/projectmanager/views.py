@@ -27,9 +27,23 @@ class ProjectViewSet(ModelViewSet):
             project = Project()
             #project.user = User.objects.get(pk=request.user.id)
             project.user = User.objects.get(pk=1) # for testing
-            project.title = (serializer.validated_data['title'])
-            project.tools = (serializer.validated_data['tools'])
-            project.description = (serializer.validated_data['description'])
+
+            title_data = serializer.validated_data['title']
+
+            already_exists = Project.objects.filter(title=title_data)
+        # UNCOMMENT THIS ONCE DONE TESTING WITH POSTMAN
+            if already_exists: # and (already_exists.user == request.user):
+                return Response({"error":"project with that title already exists"})
+
+            tools_data = serializer.validated_data['tools']
+            description_data = serializer.validated_data['description']
+
+            if title_data == None or tools_data == None or description_data == None:
+                return Response({"error":"required fields missing"})
+
+            project.title = title_data
+            project.tools = tools_data
+            project.description = description_data
             project.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         else:
@@ -39,11 +53,13 @@ class ProjectViewSet(ModelViewSet):
     def update(self, request, *args, **kwargs):
         serializer = ProjectSerializer(data=request.data, partial=True)
         if serializer.is_valid():
-            if request.user.id == serializer.validated_data['user']:
                 t = (serializer.validated_data['title'])
                 project = get_object_or_404(Project, title=t)
-                project.images = (serializer.validated_data['images'])
-                project.save()
+
+        # UNCOMMENT THIS ONCE DONE TESTING WITH POSTMAN
+                if project.user: # == request.user:
+                    project.images = (serializer.validated_data['images'])
+                    project.save()
 
                 return Response(serializer.data, status=status.HTTP_202_ACCEPTED)
         else:
