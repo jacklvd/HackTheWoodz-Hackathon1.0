@@ -2,13 +2,20 @@
 from functools import partial
 from django.shortcuts import redirect, render
 from rest_framework.response import Response
-from rest_framework.decorators import api_view, action
+from rest_framework.decorators import api_view, action, permission_classes
 from rest_framework.viewsets import ModelViewSet
 from rest_framework import status, permissions
 from django.contrib.auth.models import User
 from django.contrib import messages
 from django.shortcuts import get_object_or_404
 from django.contrib.auth import authenticate, login, logout
+from rest_framework.status import (
+    HTTP_400_BAD_REQUEST,
+    HTTP_404_NOT_FOUND,
+    HTTP_200_OK
+)
+from rest_framework.authtoken.models import Token
+from django.views.decorators.csrf import csrf_exempt
 
 # project packages
 from projectmanager.models import Project, User
@@ -128,29 +135,49 @@ class ProjectViewSet(ModelViewSet):
         return Response(serializer.data)
     
     # endpoint for login page    
-    @action(detail=True, methods=['post'])
-    def loginPage(self, request):
-        # serializer = ProjectSerializer(data=request.data, partial=True)
-        user = User()
-        username = request.POST.get('username')
-        password = request.POST.get('password')
-        # check if the user is exist
-        try:
-            user = User.objects.get(username=username)
-        except:
-            messages.error(request, 'User does not exit')
+    # @action(detail=True, methods=['post'])
+    # def loginPage(self, request):
+    #     # serializer = ProjectSerializer(data=request.data, partial=True)
+    #     user = User()
+    #     username = request.POST.get('username')
+    #     password = request.POST.get('password')
+    #     # check if the user is exist
+    #     try:
+    #         user = User.objects.get(username=username)
+    #     except:
+    #         messages.error(request, 'User does not exit')
             
-        userAu = authenticate(request, username=username, password=password)
+    #     userAu = authenticate(request, username=username, password=password)
         
-        if userAu is not None:
-            login(request,userAu) #add database of user
-            return redirect('home') # return the user to homepage for now just placeholder
-        else:
-            messages.error(request, 'Username or Password does not exit')    
-        # context = {}
-        return Response(userAu, status=status.HTTP_202_ACCEPTED) #placeholder for now
+    #     if userAu is not None:
+    #         login(request,userAu) #add database of user
+    #         return redirect('home') # return the user to homepage for now just placeholder
+    #     else:
+    #         messages.error(request, 'Username or Password does not exit')    
+    #     # context = {}
+    #     return Response(userAu, status=status.HTTP_202_ACCEPTED) #placeholder for now
+
+    # @csrf_exempt
+    # @api_view(["POST"])
+    # @permission_classes((AllowAny,))
+    # def login(self, request):
+    #     username = request.data.get("username")
+    #     password = request.data.get("password")
+    #     if username is None or password is None:
+    #         return Response({'error': 'Please provide both username and password'},
+    #                         status=HTTP_400_BAD_REQUEST)
+    #     user = authenticate(username=username, password=password)
+    #     if not user:
+    #         return Response({'error': 'Invalid Credentials'},
+    #                         status=HTTP_404_NOT_FOUND)
+    #     token, _ = Token.objects.get_or_create(user=user)
+    #     return Response({'token': token.key},
+    #                     status=HTTP_200_OK)
+
     
     # a get action I guess
     def logoutUser(request):
         logout(request)
-        return redirect('home') # placeholder for the homepage/login page    
+        return redirect('home') # placeholder for the homepage/login page
+    
+    

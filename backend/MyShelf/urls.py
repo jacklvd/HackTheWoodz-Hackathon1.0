@@ -16,6 +16,8 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from django.http import HttpResponse
+from rest_framework.authtoken import views
+from .views import login
 
 # for testing or setting purpose
 def home(request):
@@ -26,6 +28,7 @@ def projectfolders(request):
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('api/login', login),
     path('', home),
     path('folders/', projectfolders),
     path('project/', include('projectmanager.urls')),
