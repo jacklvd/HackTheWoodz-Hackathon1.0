@@ -6,7 +6,7 @@ import 'animate.css/animate.min.css';
 import 'react-notifications-component/dist/theme.css'
 
 
-const Login = ({ setOverlays }) => {
+const Login = ({ navigate, setOverlays }) => {
 
     const [loginState, setLoginState] = useState({"username": '', "password": ''});
 

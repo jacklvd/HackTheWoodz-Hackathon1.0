@@ -1,7 +1,12 @@
 from pathlib import Path
+import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
+
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_URL = '/media/'
+# for accessing files via http
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'django-insecure-(xq_l&y&^%ktsjo1a62ax@(q75drcbcalwy_qpswlv76+vkx8z'
@@ -11,10 +16,10 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
-#REST_FRAMEWORK = {
-#    'DEFAULT_PERMISSION_CLASSES': [
-#        'rest_framework.permissions.IsAuthenticated'
-#}
+REST_FRAMEWORK = {
+    'DEFAULT_PERMISSION_CLASSES': []
+        #'rest_framework.permissions.IsAuthenticated'
+}
 
 INSTALLED_APPS = [
     'django.contrib.admin',
