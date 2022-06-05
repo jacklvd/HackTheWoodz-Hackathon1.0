@@ -31,7 +31,7 @@ class ProjectViewSet(ModelViewSet):
         serializer = ProjectSerializer(data=request.data)
         if serializer.is_valid():
             project = Project()
-            project.user = User.objects.get(pk=request.user.id)
+            project.user = User.objects.get(pk=1)
             project.title = (serializer.validated_data['title'])
             project.tools = (serializer.validated_data['tools'])
             project.description = (serializer.validated_data['description'])

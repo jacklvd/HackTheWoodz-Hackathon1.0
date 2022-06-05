@@ -12,13 +12,25 @@ export const PracPost = async () => {
 
     var bodyFormData = new FormData();
 
-    bodyFormData.append('title', 'title');
+    bodyFormData.append('title', "sup");
     bodyFormData.append('tools', 'also tools');
     bodyFormData.append('description', 'other');
 
     const res = await axios.post("http://localhost:8000/projectmanager/create/", bodyFormData);
     console.log(res);
-    const data = await res.data;
-    console.log(data);
 
+};
+
+export const PracUploadImage = async (imgFile) => {
+    var bodyFormData = new FormData();
+
+    bodyFormData.append('imgFile', imgFile);
+
+    const res = await axios.post("", bodyFormData, {
+        headers: {
+            'Content-Type': 'multipart/form-data'
+        }
+    });
+
+    console.log(res);
 };
