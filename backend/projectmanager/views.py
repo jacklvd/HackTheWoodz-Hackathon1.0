@@ -55,23 +55,33 @@ class ProjectViewSet(ModelViewSet):
     @action(detail=False, methods=['patch'])
     def update(self, request, *args, **kwargs):
         serializer = ProjectSerializer(data=request.data, partial=True)
+
         if serializer.is_valid():
-            # change grab by ID
-            title_data = (serializer.validated_data['title'])
-            project = get_object_or_404(Project, title=title_data)
+                    # grab project by title
+            if serializer.initial_data.get('title'):
+                title_data = serializer.validated_data['title']
+                project = get_object_or_404(Project, title=title_data)
+            else:
+                return Response({"error":"project not found"})
+
+            #id is not passed in serializer due to being read only
+            #project_id = (serializer.validated_data['id'])
 
         # UNCOMMENT THIS ONCE DONE TESTING WITH POSTMAN
             if project.user: # == request.user:
-            # change grab by ID
 
-                # update anything that's changed (not None)
-                tools_data = serializer.validated_data['tools']
-                description_data = serializer.validated_data['description']
-                image_data = serializer.validated_data['images']
+                # update anything that's changed been changed in request body
 
-                project.images = (serializer.validated_data['images'])
+                if serializer.data.get('tools'):
+                    project.tools = serializer.validated_data['tools']
+
+                if serializer.data.get('description'):
+                    project.description = serializer.validated_data['description']
+
+                if serializer.data.get('images'):
+                    project.images = serializer.validated_data['images']
+
                 project.save()
-
                 return Response(serializer.data, status=status.HTTP_202_ACCEPTED)
         else:
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
