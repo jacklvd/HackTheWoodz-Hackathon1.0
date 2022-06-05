@@ -104,22 +104,27 @@ class ProjectViewSet(ModelViewSet):
         
     @action(detail=True, methods=['post'])
     def loginPage(self, request):
-        serializer = ProjectSerializer(data=request.data, partial=True)
+        # serializer = ProjectSerializer(data=request.data, partial=True)
         user = User()
-        user.username = request.POST.get('username')
-        user.password = request.POST.get('password')
+        username = request.POST.get('username')
+        password = request.POST.get('password')
         # check if the user is exist
         try:
-            user = User.objects.get(username=user.username)
+            user = User.objects.get(username=username)
         except:
             messages.error(request, 'User does not exit')
             
-        userAu = authenticate(request, username=user.username, password=user.password)
+        userAu = authenticate(request, username=username, password=password)
         
         if userAu is not None:
-            login(request,user) #add database of user
+            login(request,userAu) #add database of user
             return redirect('home') # return the user to homepage for now just placeholder
         else:
             messages.error(request, 'Username or Password does not exit')    
-        context = {}
-        return Response(serializer.data, status=status.HTTP_202_ACCEPTED) #placeholder for now    
+        # context = {}
+        return Response(userAu, status=status.HTTP_202_ACCEPTED) #placeholder for now
+    
+    # a get action I guess
+    def logoutUser(request):
+        logout(request)
+        return redirect('home') # placeholder for the homepage/login page    
