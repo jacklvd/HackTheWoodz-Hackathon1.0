@@ -27,12 +27,6 @@ class ProjectViewSet(ModelViewSet):
         serializer = ProjectSerializer(data=request.data)
         if serializer.is_valid():
             project = Project()
-<<<<<<< HEAD
-            project.user = User.objects.get(pk=1)
-            project.title = (serializer.validated_data['title'])
-            project.tools = (serializer.validated_data['tools'])
-            project.description = (serializer.validated_data['description'])
-=======
             #project.user = User.objects.get(pk=request.user.id)
             project.user = User.objects.get(pk=1) # for testing
 
@@ -53,7 +47,6 @@ class ProjectViewSet(ModelViewSet):
             project.title = title_data
             project.tools = tools_data
             project.description = description_data
->>>>>>> 7696d1b52a33002026f0d67169cdc8e8adc61dbf
             project.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         else:
