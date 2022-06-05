@@ -29,7 +29,7 @@ class User(models.Model):
     updated = models.DateTimeField(auto_now=True)
     created = models.DateTimeField(auto_now_add=True)
     
-    # planning idea create a encrypt and decrypt method for the password
+    # planning idea to create encrypt and decrypt methods for the password
     
     def __str__(self) -> str:
         return self.name
