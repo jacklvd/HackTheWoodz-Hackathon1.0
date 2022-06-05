@@ -15,13 +15,13 @@ function App() {
   return (
     <>
       <ReactNotifications />
-      <Routes>
+      {/* <Routes>
         <Route path="/" element={<Login navigate={navigate} setOverlays={setOverlays} />}></Route>
         <Route path="/create-account" element={<CreateAccount />} />
-      </Routes>
-      {/* <Prac /> */}
-      { overlays.loading && <Loader /> }
-      { overlays.background && <div id="dark-overlay"></div> }
+      </Routes> */}
+      <Prac />
+      {/* { overlays.loading && <Loader /> }
+      { overlays.background && <div id="dark-overlay"></div> } */}
     </>
   );
 }

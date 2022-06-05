@@ -32,12 +32,13 @@ const Prac = () => {
 
     useEffect(() => {
 
-        const update = async(image) => {
-            await PracUploadImage(image);
-        }
-        if(image){
-            update(image);
-        }
+        // const update = async(image) => {
+        //     await PracUploadImage(image);
+        // }
+        // if(image){
+        //     update(image);
+        // }
+        PracPost();
     }, [image]);
 
     return (
