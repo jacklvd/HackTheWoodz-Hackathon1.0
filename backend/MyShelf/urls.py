@@ -6,5 +6,4 @@ from projectmanager import urls
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('projectmanager/', include(urls)),
-    #path('auth-api/', include('rest_framework.urls')),
 ]
