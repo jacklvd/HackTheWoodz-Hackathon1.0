@@ -9,6 +9,7 @@ djangorestframework = "*"
 maskpass = "*"
 httpie = "*"
 pillow = "*"
+django-crispy-forms = "*"
 
 [dev-packages]
 

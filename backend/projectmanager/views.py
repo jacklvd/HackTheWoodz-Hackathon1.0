@@ -12,7 +12,7 @@ from django.contrib.auth import authenticate, login, logout
 
 # project packages
 from projectmanager.models import Project, User
-from .serializers import ProjectSerializer
+from .serializers import ProjectSerializer, UserSerializer
 
 # for testing purpose
 # def get_base_url(request):
@@ -101,7 +101,33 @@ class ProjectViewSet(ModelViewSet):
                 return Response(serializer.data, status=status.HTTP_202_ACCEPTED)
         else:
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-        
+
+    @action(detail=True, methods=['post'])
+    def set_password(self, request, pk=None):
+        user = self.get_object()
+        serializer = UserSerializer(data=request.data)
+        if serializer.is_valid():
+            user.set_password(serializer.validated_data['password'])
+            user.save()
+            return Response({'status': 'password set'})
+        else:
+            return Response(serializer.errors,
+                            status=status.HTTP_400_BAD_REQUEST)
+
+    # this one for us to check the data, not really an endpoint tho
+    @action(detail=False)
+    def recent_users(self, request):
+        recent_users = User.objects.all().order_by('-last_login')
+
+        page = self.paginate_queryset(recent_users)
+        if page is not None:
+            serializer = self.get_serializer(page, many=True)
+            return self.get_paginated_response(serializer.data)
+
+        serializer = self.get_serializer(recent_users, many=True)
+        return Response(serializer.data)
+    
+    # endpoint for login page    
     @action(detail=True, methods=['post'])
     def loginPage(self, request):
         # serializer = ProjectSerializer(data=request.data, partial=True)

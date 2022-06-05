@@ -7,4 +7,5 @@ urlpatterns = [
     path('update/', ProjectViewSet.as_view({'post':'update'})),
     path('login/', ProjectViewSet.as_view({'post':'loginPage'})),
     path('logout/', ProjectViewSet.logoutUser, name='logout'),
+    path('password/', ProjectViewSet.as_view({'post':'set_password'})),
 ]
